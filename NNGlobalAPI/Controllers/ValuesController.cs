@@ -1,5 +1,4 @@
-﻿using log4net.Core;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
@@ -16,13 +15,17 @@ namespace API.Controllers
         {
             log4console = logger;
         }
+        /// <summary>
+        /// Zwraca testowe dane
+        /// </summary>
+        /// <returns></returns>
         // GET: api/<ValuesController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
-           var ret =new string[] { "value1", "value2" };
+            var ret = new string[] { "value1", "value2" };
             //log4console.LogDebug("DEBUG: użytkownik pobrał dane z kontrolera!");
-            //log4console.LogInformation("INFO: użytkowNik pobrał dane z kontrolera!");
+            log4console.LogInformation("INFO: użytkownik pobrał dane z kontrolera!");
             //log4console.LogError("ERROR: użytkownik pobrał dane z kontrolera!");
             //log4console.LogWarning("WARNING: użytkownik pobrał dane z kontrolera!");
             return ret;
