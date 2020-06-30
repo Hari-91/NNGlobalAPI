@@ -20,6 +20,7 @@ namespace API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureLogging(conf => conf.ClearProviders());
                     webBuilder.UseStartup<Startup>();
                 });
     }
