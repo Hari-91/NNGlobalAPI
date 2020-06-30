@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using log4net.Core;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace API.Controllers
 {
@@ -12,11 +10,23 @@ namespace API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        public readonly ILogger log4console;
+
+        public ValuesController(ILogger<ValuesController> logger)
+        {
+            log4console = logger;
+        }
         // GET: api/<ValuesController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+           var ret =new string[] { "value1", "value2" };
+            //log4console.LogDebug("DEBUG: użytkownik pobrał dane z kontrolera!");
+            //log4console.LogInformation("INFO: użytkowNik pobrał dane z kontrolera!");
+            //log4console.LogError("ERROR: użytkownik pobrał dane z kontrolera!");
+            //log4console.LogWarning("WARNING: użytkownik pobrał dane z kontrolera!");
+            return ret;
+
         }
 
         // GET api/<ValuesController>/5
