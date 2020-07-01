@@ -3,8 +3,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +17,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using UserModule.Model;
+using UserModule.Model.RawModel;
+
 
 namespace API
 {
@@ -30,10 +36,25 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+
             services.AddControllers();
-            //services.AddDbContext<UsersApi>(opt =>
-            //opt.UseSqlServer(Configuration.GetConnectionString("Bot")));
-            //opt.UseInMemoryDatabase("FifaManagement"));
+
+            services.AddIdentity<User, Role>(options =>
+            {
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.SignIn.RequireConfirmedEmail = true;
+                options.User.RequireUniqueEmail = true;
+            })
+                    .AddEntityFrameworkStores<UserDbContext>().AddDefaultTokenProviders();
+
+
+
+            services.AddDbContext<UserDbContext>(o => o.UseFirebird(Configuration.GetConnectionString("NovatekNetworkConnection"))
+                                                                 .EnableSensitiveDataLogging(), ServiceLifetime.Transient);
 
             services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c =>
@@ -41,7 +62,7 @@ namespace API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Novatek Network API", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description =string.Format("JWT Authorization header using the Bearer scheme.\r\n\r\n "+
+                    Description = string.Format("JWT Authorization header using the Bearer scheme.\r\n\r\n " +
                     "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\n " +
                     "Example: 'Bearer 12345abcdef'"),
                     Name = "Authorization",
@@ -99,8 +120,29 @@ namespace API
                     };
                 });
 
-            // configure DI for application services
-            //services.AddScoped<IUserService, UserService>();
+            services.AddAuthentication();
+            //services.ConfigureIdentity();
+
+            //configure DI for application services
+
+           ////services.AddScoped<IUserService, UserService>();
+           //services.TryAddScoped<UserManager<User>>();
+           // services.TryAddScoped<SignInManager<User>>();
+           // services.AddHttpContextAccessor();
+           // // Identity services
+           // services.TryAddScoped<IUserValidator<User>, UserValidator<User>>();
+           // services.TryAddScoped<IPasswordValidator<User>, PasswordValidator<User>>();
+           // services.TryAddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+           // services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
+           // services.TryAddScoped<IRoleValidator<Role>, RoleValidator<Role>>();
+           // // No interface for the error describer so we can add errors without rev'ing the interface
+           // services.TryAddScoped<IdentityErrorDescriber>();
+           // //services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<TUsUserer>>();
+           // services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<User>>();
+           // services.TryAddScoped<IUserClaimsPrincipalFactory<User>, UserClaimsPrincipalFactory<User, Role>>();
+           // services.TryAddScoped<UserManager<User>>();
+           // services.TryAddScoped<SignInManager<User>>();
+           // services.TryAddScoped<RoleManager<Role>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

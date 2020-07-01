@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "NNGlobalAPI\API.csproj", "{B4C6873E-D4C0-45D4-9D4A-3AE59F7908D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User", "User\User.csproj", "{D0DAE6A7-A135-4FBC-989A-50808D80A41C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserModule", "User\UserModule.csproj", "{D0DAE6A7-A135-4FBC-989A-50808D80A41C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
