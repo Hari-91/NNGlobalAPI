@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using UserModule.Model.Dto;
 using UserModule.Service.IService;
 
@@ -21,9 +22,13 @@ namespace API.Controllers
         /// Logowanie do systemu
         /// </summary>
         /// <param name="model"></param>
-        /// <returns>JWT w header</returns>
+        /// <returns></returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response>
         // POST api/<LoginController>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Authenticate([FromBody] UserLoginDto model)
         {
             var usr = userService.AuthenticateAsync(model.UserName, model.Password);
