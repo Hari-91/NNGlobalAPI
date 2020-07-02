@@ -11,8 +11,8 @@ namespace UserModule.Model
         //public static implicit operator Role(RoleEnum re) => new Role(re);
         //public static implicit operator RoleEnum(Role r) => (RoleEnum)r.Id;
 
-        [Required]
-        [MaxLength(32)]
+        //[Required]
+        //[MaxLength(32)]
         public string ViewText { get; protected set; }
 
         //protected Role() { }

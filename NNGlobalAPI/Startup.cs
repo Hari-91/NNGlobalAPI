@@ -19,7 +19,8 @@ using System.Reflection;
 using System.Text;
 using UserModule.Model;
 using UserModule.Model.RawModel;
-
+using UserModule.Service;
+using UserModule.Service.IService;
 
 namespace API
 {
@@ -125,24 +126,24 @@ namespace API
 
             //configure DI for application services
 
-           ////services.AddScoped<IUserService, UserService>();
-           //services.TryAddScoped<UserManager<User>>();
-           // services.TryAddScoped<SignInManager<User>>();
-           // services.AddHttpContextAccessor();
-           // // Identity services
-           // services.TryAddScoped<IUserValidator<User>, UserValidator<User>>();
-           // services.TryAddScoped<IPasswordValidator<User>, PasswordValidator<User>>();
-           // services.TryAddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-           // services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
-           // services.TryAddScoped<IRoleValidator<Role>, RoleValidator<Role>>();
-           // // No interface for the error describer so we can add errors without rev'ing the interface
-           // services.TryAddScoped<IdentityErrorDescriber>();
-           // //services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<TUsUserer>>();
-           // services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<User>>();
-           // services.TryAddScoped<IUserClaimsPrincipalFactory<User>, UserClaimsPrincipalFactory<User, Role>>();
-           // services.TryAddScoped<UserManager<User>>();
-           // services.TryAddScoped<SignInManager<User>>();
-           // services.TryAddScoped<RoleManager<Role>>();
+            services.AddScoped<IUserService, UserService>();
+            //services.TryAddScoped<UserManager<User>>();
+            // services.TryAddScoped<SignInManager<User>>();
+            // services.AddHttpContextAccessor();
+            // // Identity services
+            // services.TryAddScoped<IUserValidator<User>, UserValidator<User>>();
+            // services.TryAddScoped<IPasswordValidator<User>, PasswordValidator<User>>();
+            // services.TryAddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            // services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
+            // services.TryAddScoped<IRoleValidator<Role>, RoleValidator<Role>>();
+            // // No interface for the error describer so we can add errors without rev'ing the interface
+            // services.TryAddScoped<IdentityErrorDescriber>();
+            // //services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<TUsUserer>>();
+            // services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<User>>();
+            // services.TryAddScoped<IUserClaimsPrincipalFactory<User>, UserClaimsPrincipalFactory<User, Role>>();
+            // services.TryAddScoped<UserManager<User>>();
+            // services.TryAddScoped<SignInManager<User>>();
+            // services.TryAddScoped<RoleManager<Role>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
