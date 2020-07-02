@@ -1,4 +1,6 @@
 using API.Helpers;
+using API.Service;
+using API.Service.IService;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -7,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -50,7 +51,8 @@ namespace API
                 options.SignIn.RequireConfirmedEmail = true;
                 options.User.RequireUniqueEmail = true;
             })
-                    .AddEntityFrameworkStores<UserDbContext>().AddDefaultTokenProviders();
+                    .AddEntityFrameworkStores<UserDbContext>()
+                    .AddDefaultTokenProviders();
 
 
 
@@ -58,6 +60,7 @@ namespace API
                                                                  .EnableSensitiveDataLogging(), ServiceLifetime.Transient);
 
             services.AddAutoMapper(typeof(Startup));
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Novatek Network API", Version = "v1" });
@@ -103,6 +106,7 @@ namespace API
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -122,31 +126,14 @@ namespace API
                 });
 
             services.AddAuthentication();
-            //services.ConfigureIdentity();
 
             //configure DI for application services
 
             services.AddScoped<IUserService, UserService>();
-            //services.TryAddScoped<UserManager<User>>();
-            // services.TryAddScoped<SignInManager<User>>();
-            // services.AddHttpContextAccessor();
-            // // Identity services
-            // services.TryAddScoped<IUserValidator<User>, UserValidator<User>>();
-            // services.TryAddScoped<IPasswordValidator<User>, PasswordValidator<User>>();
-            // services.TryAddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-            // services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
-            // services.TryAddScoped<IRoleValidator<Role>, RoleValidator<Role>>();
-            // // No interface for the error describer so we can add errors without rev'ing the interface
-            // services.TryAddScoped<IdentityErrorDescriber>();
-            // //services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<TUsUserer>>();
-            // services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<User>>();
-            // services.TryAddScoped<IUserClaimsPrincipalFactory<User>, UserClaimsPrincipalFactory<User, Role>>();
-            // services.TryAddScoped<UserManager<User>>();
-            // services.TryAddScoped<SignInManager<User>>();
-            // services.TryAddScoped<RoleManager<Role>>();
+            services.AddScoped<ITokenService, TokenService>();
+
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddLog4Net();
@@ -154,18 +141,17 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            // global cors policy
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -175,8 +161,6 @@ namespace API
 
             app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "NN API V1");

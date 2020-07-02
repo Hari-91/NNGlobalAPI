@@ -4,9 +4,9 @@ using System.Text;
 
 namespace UserModule.Helpers
 {
-    class AppSettings
+    public class AppSettings
     {
-        public string Secret { get; set; }
-
+        public string Secret { get ; set ; }
     }
+
 }
