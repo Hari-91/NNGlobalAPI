@@ -28,7 +28,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        /// <response code="200">Logowanie sie udało, JWT umieszczony w cookie</response>
+        /// <response code="200">Logowanie sie udało, JWT umieszczony w Header</response>
         /// <response code="400">Logowanie sie nie udało</response>
         // POST api/<LoginController>
         [HttpPost]
@@ -39,7 +39,7 @@ namespace API.Controllers
             var usr = userService.AuthenticateAsync(model.UserName, model.Password);
             if (usr.Result != null)
             {
-                var token = tokenService.generateToken(usr.Result.Id);
+                var token = tokenService.generateToken(usr.Result.Id.ToString());
                 HttpContext.Response.Headers.Add("Bearer", token);
                 return Ok(usr.Result);
             }

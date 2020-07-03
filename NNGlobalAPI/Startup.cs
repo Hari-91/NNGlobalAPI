@@ -2,7 +2,6 @@ using API.Helpers;
 using API.Service;
 using API.Service.IService;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -61,7 +60,11 @@ namespace API
                                                                  .EnableSensitiveDataLogging(), ServiceLifetime.Transient);
 
             services.AddAutoMapper(typeof(Startup));
-            
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                        );
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Novatek Network API", Version = "v1" });
