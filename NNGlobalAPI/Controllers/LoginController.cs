@@ -49,7 +49,6 @@ namespace API.Controllers
             { 
                 var token = tokenService.generateToken(usr.Result.Id);
                 HttpContext.Response.Headers.Add("Bearer", token);
-                HttpContext.Response.Cookies.Append("Bearer", token);
                 return Ok(usr.Result);
             }
             return BadRequest(new { message = "Username or password is incorrect" });
