@@ -2,6 +2,7 @@ using API.Helpers;
 using API.Service;
 using API.Service.IService;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -103,6 +104,7 @@ namespace API
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
+
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
@@ -125,7 +127,6 @@ namespace API
                     };
                 });
 
-            services.AddAuthentication();
 
             //configure DI for application services
 
