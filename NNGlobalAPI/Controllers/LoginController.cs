@@ -1,13 +1,6 @@
-﻿using API.Helpers;
-using API.Service.IService;
+﻿using API.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using UserModule.Model.Dto;
 using UserModule.Service.IService;
 
@@ -19,13 +12,12 @@ namespace API.Controllers
     {
 
         private readonly IUserService userService;
-        private readonly AppSettings appSettings;
+
         private readonly ITokenService tokenService;
 
-        public LoginController(IUserService service, IOptions<AppSettings>  settings, ITokenService token)
+        public LoginController(IUserService service, ITokenService token)
         {
             userService = service;
-            appSettings = settings.Value;
             tokenService = token;
 
         }
@@ -46,7 +38,7 @@ namespace API.Controllers
         {
             var usr = userService.AuthenticateAsync(model.UserName, model.Password);
             if (usr.Result != null)
-            { 
+            {
                 var token = tokenService.generateToken(usr.Result.Id);
                 HttpContext.Response.Headers.Add("Bearer", token);
                 return Ok(usr.Result);
