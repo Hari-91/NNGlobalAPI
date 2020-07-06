@@ -10,6 +10,7 @@ namespace UserModule.Model.RawModel
         [Key]
         public int ID_MODULE { get; set; }
         public string NAME { get; set; }
-        public virtual ICollection<Funcionality> Funcionality { get; set; }
+        public virtual ICollection<Funcionality> Funcionalities { get; set; }
+
     }
 }
