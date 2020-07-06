@@ -24,18 +24,23 @@ namespace API.Controllers
         }
         // GET: api/<UserController>
         [HttpGet]
-        public Task<List<JoinUserModule>> Get()
+        public Task<List<Module>> Get()
         {
 
-            var usr = userDbContext.USER_MODULE
-                .AsNoTracking()
-                .Where(m => m.ID_USER == 13890)
-                .Include(m=>m.Module)
-                    .ThenInclude(f=>f.Funcionality)
-                .ToListAsync();
-               
+            var usr = userDbContext.PERMISSION
+                .Where(i => i.ID_USER == 13890)
+                .Include(m => m.Module)
+                    .ThenInclude(k => k.Funcionalities)
+                        .ThenInclude(o=>o.Permissions)
+                            .ThenInclude(p=>p.Operation)
+                .Where(i => i.ID_USER == 13890 )
 
-            return usr;
+                .Select(n => n.Module)
+                .Distinct()
+                .AsNoTracking()
+                .ToListAsync();
+
+                    return usr;
         }
 
         // GET api/<UserController>/5
